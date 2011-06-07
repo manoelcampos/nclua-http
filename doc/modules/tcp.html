@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li>
+		<a href="../modules/base64.html">base64</a>
+	</li>
+
+	<li>
+		<a href="../modules/http.html">http</a>
+	</li>
+
+	<li><strong>tcp</strong></li>
+	
+	<li>
+		<a href="../modules/util.html">util</a>
+	</li>
+
+</ul>
+
+
+
+<!-- File list -->
+
+<h1>Files</h1>
+<ul>
+
+	<li>
+		<a href="../files/enquete.html">enquete.lua</a>
+	</li>
+
+	<li>
+		<a href="../files/exemplo1.html">exemplo1.lua</a>
+	</li>
+
+	<li>
+		<a href="../files/exemplo2.html">exemplo2.lua</a>
+	</li>
+
+	<li>
+		<a href="../files/lib/base64.html">lib/base64.lua</a>
+	</li>
+
+	<li>
+		<a href="../files/lib/http.html">lib/http.lua</a>
+	</li>
+
+	<li>
+		<a href="../files/lib/tcp.html">lib/tcp.lua</a>
+	</li>
+
+	<li>
+		<a href="../files/lib/util.html">lib/util.lua</a>
+	</li>
+
+</ul>
+
+
+
+
+
+
+</div><!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Module <code>tcp</code></h1>
+
+<p>Módulo para realização de conexões TCP. Utiliza co-rotinas de lua para simular multi-thread. Fonte: <a href="http://www.telemidia.puc-rio.br/~francisco/nclua/index.html">Tutorial de NCLua</a></p>
+
+
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#connect">connect</a>&nbsp;(host, port)</td>
+	<td class="summary">Conecta em um servidor por meio do protocolo TCP.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#disconnect">disconnect</a>&nbsp;()</td>
+	<td class="summary">Fecha a conexão TCP e retorna imediatamente </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#execute">execute</a>&nbsp;(f, ...)</td>
+	<td class="summary">Função que deve ser chamada para iniciar uma conexão TCP.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#handler">handler</a>&nbsp;(evt)</td>
+	<td class="summary">Função tratadora de eventos.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#receive">receive</a>&nbsp;(pattern)</td>
+	<td class="summary">Recebe resposta de uma requisição enviada previamente ao servidor.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#send">send</a>&nbsp;(value)</td>
+	<td class="summary">Envia uma requisição TCP ao servidor no qual se está conectado, e retorna imediatamente.</td>
+	</tr>
+
+</table>
+
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="connect"></a><strong>connect</strong>&nbsp;(host, port)</dt>
+<dd>
+Conecta em um servidor por meio do protocolo TCP. A função só retorna quando a conexão for estabelecida.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  host: Nome do host para conectar
+	</li>
+	
+	<li>
+	  port: Porta a ser usada para a conexão
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="disconnect"></a><strong>disconnect</strong>&nbsp;()</dt>
+<dd>
+Fecha a conexão TCP e retorna imediatamente
+
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="execute"></a><strong>execute</strong>&nbsp;(f, ...)</dt>
+<dd>
+Função que deve ser chamada para iniciar uma conexão TCP.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  f: Função que deverá executar as rotinas para realização de uma conexão TCP, envio de requisições e obtenção de resposta.
+	</li>
+	
+	<li>
+	  ...: Todos os parâmetros adicionais são passados à função que a co-rotina executa.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+<h3>See also:</h3>
+<ul>
+	
+	<li><a href="">
+		resume
+	</a>
+	
+</ul>
+
+</dd>
+
+
+
+
+<dt><a name="handler"></a><strong>handler</strong>&nbsp;(evt)</dt>
+<dd>
+Função tratadora de eventos. Utilizada para tratar os eventos gerados pelas chamadas às funções da classe tcp.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  evt: Tabela contendo os dados do evento capturado
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="receive"></a><strong>receive</strong>&nbsp;(pattern)</dt>
+<dd>
+Recebe resposta de uma requisição enviada previamente ao servidor.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  pattern: Padrão para recebimento dos dados. Se passado *a, todos os dados da resposta são retornados de uma só vez, sem precisar fazer chamadas sucessivas a esta função. Se omitido, os dados vão sendo retornados parcialmente, sendo necessárias várias chamadas à função.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="send"></a><strong>send</strong>&nbsp;(value)</dt>
+<dd>
+Envia uma requisição TCP ao servidor no qual se está conectado, e retorna imediatamente.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  value: Mensagem a ser enviada ao servidor.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>

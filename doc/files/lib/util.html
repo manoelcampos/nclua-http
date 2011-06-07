@@ -1,0 +1,572 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../../luadoc.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li>
+		<a href="../../modules/base64.html">base64</a>
+	</li>
+
+	<li>
+		<a href="../../modules/http.html">http</a>
+	</li>
+
+	<li>
+		<a href="../../modules/tcp.html">tcp</a>
+	</li>
+
+	<li>
+		<a href="../../modules/util.html">util</a>
+	</li>
+
+</ul>
+
+
+
+<!-- File list -->
+
+<h1>Files</h1>
+<ul>
+
+	<li>
+		<a href="../../files/enquete.html">enquete.lua</a>
+	</li>
+
+	<li>
+		<a href="../../files/exemplo1.html">exemplo1.lua</a>
+	</li>
+
+	<li>
+		<a href="../../files/exemplo2.html">exemplo2.lua</a>
+	</li>
+
+	<li>
+		<a href="../../files/lib/base64.html">lib/base64.lua</a>
+	</li>
+
+	<li>
+		<a href="../../files/lib/http.html">lib/http.lua</a>
+	</li>
+
+	<li>
+		<a href="../../files/lib/tcp.html">lib/tcp.lua</a>
+	</li>
+
+	<li><strong>lib/util.lua</strong></li>
+	
+</ul>
+
+
+
+
+
+
+</div> <!-- id="navigation" -->
+
+<div id="content">
+
+<h1>File <code>lib/util.lua</code></h1>
+
+
+<p>Módulo de funções de uso geral v1.3.3</p>
+
+
+<p><b>Author:</b>
+<table class="authors_list">
+
+	<tr><td class="name">Manoel Campos da Silva Filho <a href="http://manoelcampos.com">http://manoelcampos.com</a></td></tr>
+
+</table>
+</p>
+
+
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#breakString">breakString</a>&nbsp;(text, maxLineSize, Text)</td>
+	<td class="summary">Quebra uma string para que a mesma tenha linhas com um comprimento máximo definido, não quebrando a mesma no meio das palavras.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#cloneTable">cloneTable</a>&nbsp;(tb)</td>
+	<td class="summary">Clona uma tabela </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#coroutineCreate">coroutineCreate</a>&nbsp;(f, ...)</td>
+	<td class="summary">Cria uma co-rotina para execução de uma determinada função.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#createFile">createFile</a>&nbsp;(content, fileName, binaryFile)</td>
+	<td class="summary">Cria um arquivo com o conteúdo informado em text.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#fileExists">fileExists</a>&nbsp;(fileName)</td>
+	<td class="summary">Verifica se um arquivo existe </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#hasSingleElement">hasSingleElement</a>&nbsp;(tb)</td>
+	<td class="summary">Verifica se uma tabela contém apenas um elemento </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#paintBreakedString">paintBreakedString</a>&nbsp;(areaWidth, x, initialY, text)</td>
+	<td class="summary">Imprime um texto na tela, quebrando o mesmo nos limites horizontais da área do canvas.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#paintText">paintText</a>&nbsp;(x, y, text, fontName, fontSize, fontColor)</td>
+	<td class="summary">Desenha um texto na tela </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#printable">printable</a>&nbsp;(tb, level)</td>
+	<td class="summary">Imprime uma tabela, de forma recursiva </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#simplifyTable">simplifyTable</a>&nbsp;(tb)</td>
+	<td class="summary">Percorre uma tabela recursivamente.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#urlEncode">urlEncode</a>&nbsp;(t)</td>
+	<td class="summary">Função para converter uma tabela para o formato URL-Encode, também chamado de Percent Encode, segundo RFC 3986.</td>
+	</tr>
+
+</table>
+
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="breakString"></a><strong>breakString</strong>&nbsp;(text, maxLineSize, Text)</dt>
+<dd>
+Quebra uma string para que a mesma tenha linhas com um comprimento máximo definido, não quebrando a mesma no meio das palavras.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  text: 
+	</li>
+	
+	<li>
+	  maxLineSize: Quantidade máxima de caracteres por linha
+	</li>
+	
+	<li>
+	  Text: String a ser quebrada
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Retorna uma tabela onde cada item é uma linha da string quebrada.
+
+
+
+</dd>
+
+
+
+
+<dt><a name="cloneTable"></a><strong>cloneTable</strong>&nbsp;(tb)</dt>
+<dd>
+Clona uma tabela
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  tb: Tabela ser clonada
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Retorna a nova tabela
+
+
+
+</dd>
+
+
+
+
+<dt><a name="coroutineCreate"></a><strong>coroutineCreate</strong>&nbsp;(f, ...)</dt>
+<dd>
+Cria uma co-rotina para execução de uma determinada função.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  f: Função body a ser executada pela co-rotina
+	</li>
+	
+	<li>
+	  ...: Parâmetros adicionais que serão passados à função body da co-rotina, passada no parâmetro f.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="createFile"></a><strong>createFile</strong>&nbsp;(content, fileName, binaryFile)</dt>
+<dd>
+Cria um arquivo com o conteúdo informado em text. Devido a função utilizar o módulo io, não disponível no Ginga, a mesma deve ser utilizada apenas para depuração, em ambientes de teste. Se o arquivo já existir, substitui.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  content: Conteúdo a ser adicionado no arquivo
+	</li>
+	
+	<li>
+	  fileName: Nome do arquivo a ser gerado.
+	</li>
+	
+	<li>
+	  binaryFile: 
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Retorna true caso o arquivo seja salvo com sucesso.
+
+
+
+</dd>
+
+
+
+
+<dt><a name="fileExists"></a><strong>fileExists</strong>&nbsp;(fileName)</dt>
+<dd>
+Verifica se um arquivo existe
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  fileName: Nome do arquivo a ser verificado
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Retorna true se o arquivo existir [[
+
+
+
+</dd>
+
+
+
+
+<dt><a name="hasSingleElement"></a><strong>hasSingleElement</strong>&nbsp;(tb)</dt>
+<dd>
+Verifica se uma tabela contém apenas um elemento
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  tb: Tabela ser verificada
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Retorna true caso a tabela contenha apenas um elemento.
+
+
+
+</dd>
+
+
+
+
+<dt><a name="paintBreakedString"></a><strong>paintBreakedString</strong>&nbsp;(areaWidth, x, initialY, text)</dt>
+<dd>
+Imprime um texto na tela, quebrando o mesmo nos limites horizontais da área do canvas.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  areaWidth: Largura a área disponível para impressão
+	</li>
+	
+	<li>
+	  x: 
+	</li>
+	
+	<li>
+	  initialY: Posição y inicial a ser impresso o texto
+	</li>
+	
+	<li>
+	  text: Texto a ser impresso, sendo quebrado em linhas para caber horizontalmente na largura definida para impressão
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="paintText"></a><strong>paintText</strong>&nbsp;(x, y, text, fontName, fontSize, fontColor)</dt>
+<dd>
+Desenha um texto na tela
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  x: Posição horizontal a ser impresso o texto
+	</li>
+	
+	<li>
+	  y: Posição vertical a ser impresso o texto
+	</li>
+	
+	<li>
+	  text: texto a ser desenhado
+	</li>
+	
+	<li>
+	  fontName: Nome da fonte a ser utilizada para imprimir o texto. Opcional
+	</li>
+	
+	<li>
+	  fontSize: Tamanho da fonte. Opcional
+	</li>
+	
+	<li>
+	  fontColor: Cor da fonte. Opcional
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="printable"></a><strong>printable</strong>&nbsp;(tb, level)</dt>
+<dd>
+Imprime uma tabela, de forma recursiva
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  tb: A tabela a ser impressa
+	</li>
+	
+	<li>
+	  level: Apenas usado internamente para imprimir espaços para representar os níveis dentro da tabela.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="simplifyTable"></a><strong>simplifyTable</strong>&nbsp;(tb)</dt>
+<dd>
+Percorre uma tabela recursivamente. Se ela contém apenas um elemento, a tabela a qual ele pertence (a externa) é eliminada, ficando apenas a tabela interna, passando esta a ser a tabela principal. Repete isto até chegar no item mais interno da tabela. Assim, uma tabela como nivel1 = { nivel2 = nivel3 = {desc = "mouse", valor = 99}} se transforma em {desc="mouse", valor = 99} Outra tabela como nivel1 = { nivel2 = nivel3 = {pais = "Brasil"}} se transforma em pais = "Brasil", sem nenhuma tabela.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  tb: Table lua gerada a partir de código XML
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Retorna a nova tabela simplificada. Se dentro de toda a estrutura da tabela original só existia um campo com valor, tal valor é retornado como uma variável simples.
+
+
+
+</dd>
+
+
+
+
+<dt><a name="urlEncode"></a><strong>urlEncode</strong>&nbsp;(t)</dt>
+<dd>
+Função para converter uma tabela para o formato URL-Encode, também chamado de Percent Encode, segundo RFC 3986. Fonte: http://www.lua.org/pil/20.3.html. Gerada a partir das funções escape e encode, gerando uma só.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  t: Tabela contendo os pares param=value que representam os parâmetros a serem codificados para o formato URL-Encode, ou String contendo o texto a ser codificado.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+Retorna uma string codificada em URL-Encode
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>
