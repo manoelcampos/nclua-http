@@ -82,7 +82,7 @@ function handler (evt)
 
 	--Evento disparado quando existem dados a serem recebidos,
 	--após a chamada da função send (para enviar uma requisição)
-  --e a chamada subsequente da função receive.
+    --e a chamada subsequente da função receive.
     if evt.type == 'data' then
         for co, t in pairs(CONNECTIONS) do
             if (t.waiting == 'data') and

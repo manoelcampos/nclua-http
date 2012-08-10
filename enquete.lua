@@ -29,6 +29,7 @@ function callback(header, body)
 end
 
 showSending()
+
 local url = "http://manoelcampos.com/votacao/votacao2.php?voto=sim"
 http.request(url, callback)
 

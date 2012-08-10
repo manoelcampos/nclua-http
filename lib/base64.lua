@@ -1,5 +1,3 @@
-#!/usr/bin/env lua
-
 ---<a href="http://lua-users.org/wiki/BaseSixtyFour">http://lua-users.org/wiki/BaseSixtyFour</a><br/>
 --Lua 5.1+ base64 v3.0 (c) 2009 by Alex Kloss <alexthkloss@web.de><br/>
 --licensed under the terms of the LGPL2<br/>

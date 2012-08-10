@@ -1,13 +1,49 @@
----Módulo de funções de uso geral v1.3.3
+---Módulo de funções de uso geral para TVD v1.3.4
 --@author Manoel Campos da Silva Filho
 --<a href="http://manoelcampos.com">http://manoelcampos.com</a>
 --@license Atribuição-Uso não-comercial-Compartilhamento pela mesma licença http://creativecommons.org/licenses/by-nc-sa/2.5/br/
 --@class module
 
-local _G, io, print, string, coroutine, canvas, tonumber, pairs, type = 
-      _G, io, print, string, coroutine, canvas, tonumber, pairs, type
+local _G, io, print, string, coroutine, canvas, tonumber, pairs, type, table = 
+      _G, io, print, string, coroutine, canvas, tonumber, pairs, type, table
 
 module "util"
+
+---Alterar o número do item atual de uma lista de itens (uma tabela por exemplo),
+--considerando o total de elementos da lista.
+--@param itemIndex Número do item atual na lista
+--@param forward Se true, incrementa o itemIndex para avançar ao próximo item, 
+--senão, decrementa o itemIndex para voltar ao item anterior
+--@param maxValue Valor máximo que o itemIndex pode assumir (total de itens na lista)
+--@param circularList Se true, indica que a lista é circular, assim, 
+--se tentar ir além do último elemento, volta para o primeiro,
+--e se tentar retroceder antes do primeiro, vai para o último.
+--@return Retorna o novo itemIndex 
+function moveItemIndex(itemIndex, forward, maxValue, circularList)
+    if forward then
+       if (itemIndex == maxValue) then
+          if circularList then
+             return 1
+          end
+       else
+          return itemIndex + 1
+       end 
+    else
+       if itemIndex <= 1 then
+          if circularList then
+             return maxValue
+          end
+       else
+          return itemIndex - 1
+       end
+    end
+    
+    --Se chegou até aqui, não altera o itemIndex, retornando o mesmo.
+    --Isto ocorrerá somente se circularList for false (não é uma lista circular),
+    --assim, se tentar ir além do último elemento, não volta para o primeiro,
+    --e se tentar retroceder antes do primeiro, não vai para o último 
+    return itemIndex
+end
 
 ---Clona uma tabela
 --@param tb Tabela ser clonada
@@ -39,44 +75,59 @@ function printable(tb, level)
   end  
 end
 
----Quebra uma string para que a mesma tenha linhas
---com um comprimento máximo definido, não quebrando
---a mesma no meio das palavras.
---@param Text String a ser quebrada
+---Recebe uma string e quebra a mesma em várias linhas
+--@param text String a ser quebrada em várias linhas
 --@param maxLineSize Quantidade máxima de caracteres por linha
---@return Retorna uma tabela onde cada item é uma linha
---da string quebrada.
+--@return Retorna uma tabela onde cada item contém uma linha
+--de texto, no tamanho máximo de maxLineSize
 function breakString(text, maxLineSize)
   local t = {}
   local str = text
-  local i, fim, countLns = 1, 0, 0
+  local i, fim = 1, 0
 
   if (str == nil) or (str == "") then
-     return t
+     return nil
   end 
 
-  str = string.gsub(str, "\n", " ")
-  str = string.gsub(str, "\r", " ")
+  --Substitui quebras de linha por espaço vazio
+  str = str:gsub("\n", " ")
+  str = str:gsub("\r", " ")
     
+  --Percorre o texto, quebrando o mesmo, até chegar ao seu final
   while i <= #str do
-     countLns = countLns + 1
      if i > #str then
-        t[countLns] = str
+        t:insert(str)
      else
         fim = i+maxLineSize-1
         if fim > #str then
            fim = #str
         else
-	        --se o caracter onde a string deve ser quebrada
-	        --não for um espaço, procura o próximo espaço
-	        if string.byte(str, fim) ~= 32 then
-	           fim = string.find(str, ' ', fim)
-	           if fim == nil then
-	              fim = #str
-	           end
-	        end
+            --Se o caracter onde a string deve ser quebrada
+            --não for um espaço, procura o próximo espaço
+            if str:byte(fim) ~= 32 then
+               --A substring é obtida a partir do 1o caractere até a posição
+               --final devido ser necessário obter um índice
+               --absoluto (relativo a string inteira) do último espaço
+               --encontrado antes da posição atual na string (variável fim)
+               local aux = str:sub(1, fim)
+               print("\t\t\t", aux)
+               --Inverte o trecho da string para procurar o primeiro espaço
+               --existente para quebrar a string 
+               --(tal 1o espaço será o último na string sem estar invertida)
+               aux = aux:reverse()               
+               fim = aux:find(' ')
+               print("\t\t\t", aux, "fim:",fim)
+               --Como a string está invertida, calcula qual a posição do espaço
+               --na string original 
+               fim = #aux - fim + 1
+               
+               --fim = str:find(' ', fim)
+               if fim == nil then
+                  fim = #str
+               end
+            end
         end
-        t[countLns]=string.sub(str, i, fim)
+        table.insert(t, str:sub(i, fim))
         i=fim+1
      end
   end
