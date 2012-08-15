@@ -69,13 +69,12 @@ function request(url, callback, method, params, userAgent, headers, user, passwo
        method = "GET"
     end
     userAgent = userAgent or version
-		port = port or 80
+	port = port or 80
     method = string.upper(method)
     if method ~= "GET" and method ~= "POST" then
        error("Parâmetro method deve ser GET ou POST")
     end
     
-    local co = false
     local protocol, host, port1, path = splitUrl(url)
     --Se existir uma número de porta dentro da URL, o valor do parâmetro port é ignorado e 
     --recebe a porta contida na URL.
@@ -87,8 +86,7 @@ function request(url, callback, method, params, userAgent, headers, user, passwo
        url = protocol .. url
     end
     
-    function sendRequest()
-	    tcp.execute(
+	tcp.execute(
 	        function ()
 	            tcp.connect(host, port)
 	            --conecta no servidor
@@ -135,7 +133,7 @@ function request(url, callback, method, params, userAgent, headers, user, passwo
 	            table.insert(request, "Host: "..host)
 	            if user and password and user ~= "" and password ~= "" then
 	               table.insert(request, "Authorization: Basic " .. 
-	                     base64.enc(user..":"..password))
+	               base64.enc(user..":"..password))
 	            end
                 if params ~= "" then
                    if type(params) == "table" then
@@ -158,31 +156,14 @@ function request(url, callback, method, params, userAgent, headers, user, passwo
                    print("\n\n----------------------------Resposta da requisição obtida\n\n")
                    print(response)
   		        end--]]
-		          
+  		        
 	            tcp.disconnect()
 			    --print("\n--------------------------Desconectou")
-	    	    coroutine.resume(co, response)        
+  		        if response then
+  		           callback(getHeaderAndContent(response))
+  		        end
 	        end
 	    )    
-	    --print("\n--------------------------Saiu da body function")
-    end
-    
-    local function startRequestProcess()
-	    --print("\n--------------------------Iniciar co-rotina (resume)")
-	    coroutine.resume(coroutine.create(sendRequest))
-	    --print("\n--------------------------Terminou resume")
-	    co = coroutine.running()
-	    --print("\n--------------------------Co-rotina suspensa (yield)")
-	    --Bloqueia o programa até obter o retorno da co-rotina
-	    --(que retornará a resposta da requisição HTTP)
-	    local response =  coroutine.yield()
-	    --print("\n--------------------------Co-rotina finalizada (terminou yield)")
-        if callback then
-           callback(getHeaderAndContent(response))
-	    end
-    end
-    
-    util.coroutineCreate(startRequestProcess)
 end
 
 ---Envia uma requisição HTTP para uma URL que represente um arquivo,

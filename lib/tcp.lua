@@ -8,18 +8,35 @@
 
 --Declara localmente módulos e funçõe globais pois, ao definir
 --o script como um módulo, o acesso ao ambiente global é perdido
-local _G, coroutine, event, assert, pairs, type, print
-    = _G, coroutine, event, assert, pairs, type, print
+local _G, coroutine, event, assert, pairs, type, print, tonumber
+    = _G, coroutine, event, assert, pairs, type, print, tonumber
 local s_sub = string.sub
 
 module 'tcp'
+
+---Indica se eh pra mostrar mensagens de depuracao
+--@see dprint
+debug = false
+
+---Indica o nivel de mensagens de debug a serem mostradas.
+--Quanto maior o nivel, mais mensagens sao mostradas
+debuglevel = 1000
+
+
+----Imprime uma mensagem de debug, caso a variavel debug seja true
+--@param ... Variaveis a serem impressas
+local function dprint(...)
+  if debug then
+     print("\t\t", ...)
+  end
+end
 
 ---Lista de conexões TCP ativas
 local CONNECTIONS = {}
 
 ---Obtém a co-rotina em execução
 --@returns Retorna o identificador da co-rotina em execução
-local current = function ()
+local function current ()
     return assert(CONNECTIONS[assert(coroutine.running())])
 end
 
@@ -38,12 +55,57 @@ end
 --recebe os dados, ela resume a co-rotina da função receive. Os dados
 --recebidos são passados à função resume, e estes são retornados pela função
 --yield depois que a co-rotina é reiniciada.
-local resume = function (co, ...)
-    assert(coroutine.status(co) == 'suspended')
+local function resume (co, ...)
+    dprint("coroutine status:", coroutine.status(co))
+    --assert(coroutine.status(co) == 'suspended')
+
+    --se a corotina foi resumida com sucesso (nao ouve erro em sua execucao'), sai
     assert(coroutine.resume(co, ...))
+    
+    --se chegou ate aqui eh pq a corotina nao foi resumida (iniciada ou reiniciada)
     if coroutine.status(co) == 'dead' then
        CONNECTIONS[co] = nil
     end
+end
+
+---Função que deve ser chamada para iniciar uma conexão TCP.
+--@param f Função que deverá executar as rotinas
+--para realização de uma conexão TCP, envio de requisições
+--e obtenção de resposta.   
+--@param ... Todos os parâmetros adicionais 
+--são passados à função que a co-rotina executa.
+--@see resume
+function execute (f, ...)
+    resume(coroutine.create(f), ...)
+end
+
+---Conecta em um servidor por meio do protocolo TCP.
+--A função só retorna quando a conexão for estabelecida.
+--@param host Nome do host para conectar
+--@param port Porta a ser usada para a conexão
+function connect (host, port)  
+    local t = {
+        host    = host,
+        port    = port,
+        waiting = 'connect'
+    }
+    CONNECTIONS[coroutine.running()] = t
+
+    dprint("Tentando conectar a "..host.." pela porta " .. port)
+    event.post {
+        class = 'tcp',
+        type  = 'connect',
+        host  = host,
+        port  = port,
+    }
+    
+    
+    --Suspende a execução da co-rotina.
+    --A função atual (connect) só retorna quando
+    --a co-rotina for resumida, o que ocorre
+    --quando o evento connect é capturado
+    --pela função handler. 
+    return coroutine.yield() 
 end
 
 ---Função tratadora de eventos. Utilizada para tratar 
@@ -51,17 +113,22 @@ end
 --@param evt Tabela contendo os dados do evento capturado
 function handler (evt)
     if evt.class ~= 'tcp' then return end
+    
+    for k, v in pairs(evt) do
+        dprint(k, v)
+    end
+    dprint("-------------")
 
     if evt.type == 'connect' then
         for co, t in pairs(CONNECTIONS) do
             if (t.waiting == 'connect') and
-               (t.host == evt.host) and (t.port == evt.port) then
+            (t.host == evt.host) and (tonumber(t.port) == tonumber(evt.port)) then
                 t.connection = evt.connection
                 t.waiting = nil
                 --Continua a execução da co-rotina,
                 --fazendo com que a função connect, que causou
-                --o disparo do evento connect, capturado
-                --por esta função (handler), seja finalizada.
+                --o disparo do evento 'connect' (capturado
+                --pela função handler) seja finalizada.
                 resume(co) 
                 break
             end
@@ -100,47 +167,6 @@ function handler (evt)
         end
         return
     end
-end
-event.register(handler)
-
-
-
----Função que deve ser chamada para iniciar uma conexão TCP.
---@param f Função que deverá executar as rotinas
---para realização de uma conexão TCP, envio de requisições
---e obtenção de resposta.   
---@param ... Todos os parâmetros adicionais 
---são passados à função que a co-rotina executa.
---@see resume
-function execute (f, ...)
-    resume(coroutine.create(f), ...)
-end
-
----Conecta em um servidor por meio do protocolo TCP.
---A função só retorna quando a conexão for estabelecida.
---@param host Nome do host para conectar
---@param port Porta a ser usada para a conexão
-function connect (host, port)
-    local t = {
-        host    = host,
-        port    = port,
-        waiting = 'connect'
-    }
-    CONNECTIONS[coroutine.running()] = t
-
-    event.post {
-        class = 'tcp',
-        type  = 'connect',
-        host  = host,
-        port  = port,
-    }
-    
-    --Suspende a execução da co-rotina.
-    --A função atual (connect) só retorna quando
-    --a co-rotina for resumida, o que ocorre
-    --quando o evento connect é capturado
-    --pela função handler. 
-    return coroutine.yield() 
 end
 
 ---Fecha a conexão TCP e retorna imediatamente
@@ -221,3 +247,6 @@ function receive (pattern)
         end
     end
 end
+
+
+event.register(handler)
