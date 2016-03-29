@@ -1,5 +1,5 @@
 ---Exemplo de enquete usando NCLua HTTP
-package.path = package.path .. ';lib/?.lua'
+package.path = package.path .. ';../?.lua'
 
 require "http"
 

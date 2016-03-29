@@ -1,6 +1,11 @@
----Módulo para realização de conexões TCP. 
---Utiliza co-rotinas de lua para simular multi-thread.
---Fonte: <a href="http://www.telemidia.puc-rio.br/~francisco/nclua/index.html">Tutorial de NCLua</a>
+---Módulo para realização de conexões TCP em scripts NCLua (
+--scripts lua em documentos NCL) para o subsistema Ginga-NCL do middleware Ginga
+--do Sistema Brasileiro de TV Digital.<br/>
+--Utiliza co-rotinas de lua para simular multi-thread.<br/>
+--Fonte: <a href="http://www.telemidia.puc-rio.br/~francisco/nclua/">Tutorial de NCLua</a><br/>
+--Colaboradores:
+--  Manoel Campos da Silva Filho - <a href="http://manooelcampos.com">http://manooelcampos.com</a>
+--@author Francisco Sant'Anna
 --@class module
 
 -- TODO:
@@ -14,13 +19,9 @@ local s_sub = string.sub
 
 module 'tcp'
 
----Indica se eh pra mostrar mensagens de depuracao
+---Indica se é pra mostrar mensagens de depuracao.
 --@see dprint
 debug = false
-
----Indica o nivel de mensagens de debug a serem mostradas.
---Quanto maior o nivel, mais mensagens sao mostradas
-debuglevel = 1000
 
 
 ----Imprime uma mensagem de debug, caso a variavel debug seja true

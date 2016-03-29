@@ -187,10 +187,6 @@ function paintText(x, y, text, fontName, fontSize, fontColor)
      canvas:drawText(x, y, text)     
 end
 
-
---DEVIDO AO USO DO MÓDULO IO, ESTA FUNÇÃO
---NÃO É PERMITIDA NO CONTEXTO DE TVD,
---POIS O MÓDULO IO NÃO FAZ PARTE DO GINGA
 ---Verifica se um arquivo existe
 --@param fileName Nome do arquivo a ser verificado
 --@return Retorna true se o arquivo existir
