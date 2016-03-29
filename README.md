@@ -24,10 +24,10 @@ A documentação do projeto foi gerada utilizando luadoc e está disponível [na
 Exemplo de uso
 --------------
 
-A seguir é demonstrado um exemplo simples de uso do módulo, que envia uma requisição GET a uma página em um servidor Web. O exemplo está disponível no arquivo para download, estando todo comentado.
+A seguir é demonstrado um exemplo simples de uso do módulo, que envia uma requisição GET a uma página em um servidor Web. O exemplo está disponível no arquivo para download, estando todo comentado. A linha `package.path` define onde pacotes lua devem ser procurados. No exemplo abaixo, está considerando-se que o arquivo do exemplo e os arquivos do módulo estão na mesma pasta. 
 
 ```lua
-package.path = package.path .. ';lib/?.lua'
+package.path = package.path .. ';./?.lua'
 require "http"
 
 function callback(header, body)
