@@ -1,7 +1,7 @@
 ---Exemplo 1 de uso do NCLua HTTP
 package.path = package.path .. ';../?.lua'
 
-require "http"
+require "ncluahttp"
 
 ---Função chamada quando a resposta da requisição é obtida
 --@param header String contndo as informações do header da resposta.

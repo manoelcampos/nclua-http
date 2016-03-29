@@ -1,7 +1,7 @@
 ---Exemplo de enquete usando NCLua HTTP
 package.path = package.path .. ';../?.lua'
 
-require "http"
+require "ncluahttp"
 
 ---Mostra mensagem indicando que a requisição está sendo enviada
 function showSending()

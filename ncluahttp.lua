@@ -18,7 +18,7 @@ require "util"
 local _G, tcp, print, util, base64, string, coroutine, table, type = 
       _G, tcp, print, util, base64, string, coroutine, table, type
 
-module "http"
+module "ncluahttp"
 
 version = "NCLuaHTTP/0.9.9"
 
