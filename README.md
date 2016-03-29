@@ -19,7 +19,7 @@ O módulo também permite a realização de requisições que requerem [autentic
 
 Documentação
 ------------
-A documentação do projeto foi gerada utilizando luadoc e está disponível para [na pasta doc](doc).
+A documentação do projeto foi gerada utilizando luadoc e está disponível [na pasta doc](doc).
 
 Exemplo de uso
 --------------
