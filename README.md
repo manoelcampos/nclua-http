@@ -28,7 +28,7 @@ A seguir é demonstrado um exemplo simples de uso do módulo, que envia uma requ
 
 ```lua
 package.path = package.path .. ';./?.lua'
-require "http"
+require "ncluahttp"
 
 function callback(header, body)
   if body then
@@ -36,7 +36,7 @@ function callback(header, body)
   end
 end
 
-http.request("http://manoelcampos.com/arquivos/pagina.html", callback)
+ncluahttp.request("http://manoelcampos.com/tv-digital/exemplo1.txt", callback)
 ```
 
 
