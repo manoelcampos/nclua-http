@@ -21,5 +21,5 @@ end
 --e o conteúdo (body) da resposta da requisição 
 --Caso a porta seja diferente da padrão (80), a mesma pode ser indicada diretamente na URL,
 --no formato http://url:porta
-http.request("http://manoelcampos.com/arquivos/pagina.html", callback)
+ncluahttp.request("http://manoelcampos.com/arquivos/pagina.html", callback)
 

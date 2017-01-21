@@ -30,6 +30,6 @@ end
 
 showSending()
 
-local url = "http://manoelcampos.com/votacao/votacao2.php?voto=sim"
-http.request(url, callback)
+local url = "http://manoelcampos.com/votacao/enquete.php?voto=sim"
+ncluahttp.request(url, callback)
 

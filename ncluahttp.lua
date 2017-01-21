@@ -150,12 +150,11 @@ function request(url, callback, method, params, userAgent, headers, user, passwo
 	            --envia uma requisição HTTP para obter o arquivo XML do feed RSS
 	            tcp.send(requestStr)
 	            --obtém todo o conteúdo do arquivo XML solicitado
+                print("Waiting TCP reply")
 	            local response = tcp.receive("*a") --parâmetro "*a" = receber todos os dados da requisição de uma vez só
-	            --[[
-	            if response ~= nil then
-                   print("\n\n----------------------------Resposta da requisição obtida\n\n")
-                   print(response)
-  		        end--]]
+	            
+	            print("\n\n----------------------------Resposta da requisição obtida\n\n")
+                print(response)
   		        
 	            tcp.disconnect()
 			    --print("\n--------------------------Desconectou")
