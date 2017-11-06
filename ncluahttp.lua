@@ -18,6 +18,9 @@ require "util"
 local _G, tcp, print, util, base64, string, coroutine, table, type = 
       _G, tcp, print, util, base64, string, coroutine, table, type
 
+---Se true, mostra no terminal o conteúdo da requisição e resposta HTTP.
+debug = false
+
 module "ncluahttp"
 
 version = "NCLuaHTTP/0.9.9"
@@ -39,26 +42,35 @@ local function getHeaderAndContent(response)
 	return header, body
 end
 
----Envia uma requisição HTTP para um determinado servidor
+---Envia uma requisição HTTP para um determinado servidor.
+--
 --@param url URL para a página que deseja-se acessar. A mesma pode incluir um número de porta,
 --não necessitando usar o parâmetro port.
+--
 --@param callback Função de callback a ser executada quando
 --a resposta da requisição for obtida. A mesma deve possuir
 --em sua assinatura, um parâmetro header e um body, que conterão, 
 --respectivamente, os headers retornados e o corpo da resposta
 --(os dois como strings).
+--
 --@param method Método HTTP a ser usado: GET ou POST. Se omitido, é usado GET.
 --onde a requisição deve ser enviada
+--
 --@param params String com o conteúdo a ser adicionado à requisição,
 --ou uma tabela, contendo pares de paramName=value,
 --no caso de requisições post enviando campos de formulário. 
 --Deve estar no formato URL Encode. 
 --No caso de requisições GET, os parâmetros devem ser passados 
 --diretamente na URL. Opcional
+--
 --@param userAgent Nome da aplicação/versão que está enviando a requisição. Opcional
+--
 --@param headers Headers HTTP adicionais a serem incluídos na requisição. Opcional
+--
 --@param user Usuário para autenticação básica. Opcional
+--
 --@param password Senha para autenticação básição. Opcional
+--
 --@param port Porta a ser utilizada para a conexão. O padrão é 80, no caso do valor ser omitido.
 --A porta também pode ser especificada diretamente na URL. Se for indicada uma porta lá e aqui
 --no parâmetro port, a porta da url é que será utilizada e a do parâmetro port será ignorada.
@@ -145,16 +157,23 @@ function request(url, callback, method, params, userAgent, headers, user, passwo
                 end   	            
 		        table.insert(request, "\n")
                 --Pega a tabela contendo os dados da requisição HTTP e gera uma string para ser enviada ao servidor
-			    local requestStr = table.concat(request, "\n")
-	            print("\n--------------------Request: \n\n"..requestStr)
+                local requestStr = table.concat(request, "\n")
+                if debug then
+                    print("\n--------------------HTTP Request--------------------")
+                    print(requestStr)
+                    print("----------------------------------------------------")
+                end
 	            --envia uma requisição HTTP para obter o arquivo XML do feed RSS
 	            tcp.send(requestStr)
 	            --obtém todo o conteúdo do arquivo XML solicitado
                 print("Waiting TCP reply")
 	            local response = tcp.receive("*a") --parâmetro "*a" = receber todos os dados da requisição de uma vez só
 	            
-	            print("\n\n----------------------------Resposta da requisição obtida\n\n")
-                print(response)
+                if debug then
+                    print("\n--------------------HTTP Response--------------------")
+                    print(response)
+                    print("-----------------------------------------------------")
+                end
   		        
 	            tcp.disconnect()
 			    --print("\n--------------------------Desconectou")
@@ -167,21 +186,28 @@ end
 
 ---Envia uma requisição HTTP para uma URL que represente um arquivo,
 --e então faz o download do mesmo.
+--
 --@param url URL para a página que deseja-se acessar. A mesma pode incluir um número de porta,
 --não necessitando usar o parâmetro port.
+--
 --@param callback Função de callback a ser executada quando
 --a resposta da requisição for obtida. A mesma deve possuir
 --em sua assinatura, um parâmetro header e um body, que conterão, 
 --respectivamente, os headers retornados e o corpo da resposta
 --(os dois como strings).
+--
 --@param fileName Caminho completo para salvar o arquivo localmente.
 --Só deve ser usado para depuração, pois passando-se
 --um nome de arquivo, fará com que a função use o módulo io,
 --não disponível no Ginga. Para uso em ambientes
 --reais (Set-top boxes), deve-se passar nil para o parâmetro
+--
 --@param userAgent Nome/versão do cliente http. Opcional
+--
 --@param user Usuário para autenticação básica. Opcional
+--
 --@param password Senha para autenticação básição. Opcional
+--
 --@param port Porta a ser utilizada para a conexão. O padrão é 80, no caso do valor ser omitido.
 --A porta também pode ser especificada diretamente na URL. Se for indicada uma porta lá e aqui
 --no parâmetro port, a porta da url é que será utilizada e a do parâmetro port será ignorada.
@@ -210,9 +236,11 @@ function getFile(url, callback, fileName, userAgent, user, password, port)
     local header, body = request(url, fileDownloaded, "GET", nil, userAgent, nil, user, password, port)
 end
 
----Obtém o valor de um determinado campo de uma resposta HTTP
+---Obtém o valor de um determinado campo de uma resposta HTTP.
+--
 --@param header Conteúdo do cabeçalho da resposta HTTP de onde deseja-se extrair
 --o valor de um campo do cabeçalho
+--
 --@param fieldName Nome do campo no cabeçalho HTTP
 function getHttpHeader(header, fieldName)
   --Procura a posição de início do campo
@@ -228,8 +256,10 @@ function getHttpHeader(header, fieldName)
   end
 end
 
----Obtém uma URL e divide a mesma em protocolo, host, porta e path
+---Obtém uma URL e divide a mesma em protocolo, host, porta e path.
+--
 --@param url URL a ser dividida
+--
 --@return Retorna o protocolo, host, porta e o path obtidas da URL.
 --Caso algum destes valores não exita na URL, é retornada uma string vazia no seu lugar.
 function splitUrl(url)
@@ -276,4 +306,3 @@ function splitUrl(url)
   
   return protocolo, host, porta, path
 end
-
