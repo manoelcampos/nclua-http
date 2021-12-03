@@ -4,25 +4,18 @@
 --Utiliza co-rotinas de lua para simular multi-thread.<br/>
 --Fonte: <a href="http://www.telemidia.puc-rio.br/~francisco/nclua/">Tutorial de NCLua</a><br/>
 --Colaboradores:
---  Manoel Campos da Silva Filho - <a href="http://manooelcampos.com">http://manooelcampos.com</a>
+--  Manoel Campos da Silva Filho - <a href="http://manoelcampos.com.br">http://manoelcampos.com.br</a>
 --@author Francisco Sant'Anna
 --@class module
 
 -- TODO:
 -- * nao aceita `tcp.execute` reentrante
 
---Declara localmente módulos e funçõe globais pois, ao definir
---o script como um módulo, o acesso ao ambiente global é perdido
-local _G, coroutine, event, assert, pairs, type, print, tonumber
-    = _G, coroutine, event, assert, pairs, type, print, tonumber
-local s_sub = string.sub
-
-module 'tcp'
-
----Indica se é pra mostrar mensagens de depuracao.
---@see dprint
-debug = false
-
+local tcp = {
+    ---Indica se é pra mostrar mensagens de depuracao.
+    --@see dprint
+    debug = false
+}
 
 ----Imprime uma mensagem de debug, caso a variavel debug seja true
 --@param ... Variaveis a serem impressas
@@ -76,15 +69,15 @@ end
 --@param ... Todos os parâmetros adicionais 
 --são passados à função que a co-rotina executa.
 --@see resume
-function execute (f, ...)
-    resume(coroutine.create(f), ...)
+function tcp.execute (f, ...)
+    tcp.resume(coroutine.create(f), ...)
 end
 
 ---Conecta em um servidor por meio do protocolo TCP.
 --A função só retorna quando a conexão for estabelecida.
 --@param host Nome do host para conectar
 --@param port Porta a ser usada para a conexão
-function connect (host, port)  
+function tcp.connect (host, port)  
     local t = {
         host    = host,
         port    = port,
@@ -112,7 +105,7 @@ end
 ---Função tratadora de eventos. Utilizada para tratar 
 --os eventos gerados pelas chamadas às funções da classe tcp.
 --@param evt Tabela contendo os dados do evento capturado
-function handler (evt)
+function tcp.handler (evt)
     if evt.class ~= 'tcp' then return end
     
     for k, v in pairs(evt) do
@@ -171,7 +164,7 @@ function handler (evt)
 end
 
 ---Fecha a conexão TCP e retorna imediatamente
-function disconnect ()
+function tcp.disconnect ()
     local t = current()
     event.post {
         class      = 'tcp',
@@ -182,7 +175,7 @@ end
 
 ---Envia uma requisição TCP ao servidor no qual se está conectado, e retorna imediatamente.
 --@param value Mensagem a ser enviada ao servidor.
-function send (value)
+function tcp.send (value)
     local t = current()
     event.post {
         class      = 'tcp',
@@ -201,7 +194,7 @@ end
 --chamadas sucessivas a esta função.
 --Se omitido, os dados vão sendo retornados parcialmente,
 --sendo necessárias várias chamadas à função.  
-function receive (pattern)
+function tcp.receive (pattern)
     pattern = pattern or '' -- TODO: '*l'/number
     local t = current()
     t.waiting = 'data'
@@ -251,3 +244,5 @@ end
 
 
 event.register(handler)
+
+return tcp
