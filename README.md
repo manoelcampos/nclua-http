@@ -28,7 +28,7 @@ A seguir é demonstrado um exemplo simples de uso do módulo, que envia uma requ
 
 ```lua
 package.path = package.path .. ';./?.lua'
-require "ncluahttp"
+local ncluahttp = require "ncluahttp"
 
 function callback(header, body)
   if body then
