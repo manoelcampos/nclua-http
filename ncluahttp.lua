@@ -11,19 +11,15 @@
 --@class module
 --<p/>
 
-require "tcp"
-require "base64"
-require "util"
+local tcp = require "tcp"
+local base64 = require "base64"
+local util = require "util"
 
-local _G, tcp, print, util, base64, string, coroutine, table, type = 
-      _G, tcp, print, util, base64, string, coroutine, table, type
-
----Se true, mostra no terminal o conteúdo da requisição e resposta HTTP.
-debug = false
-
-module "ncluahttp"
-
-version = "NCLuaHTTP/0.9.9"
+local ncluahttp = {
+   ---Se true, mostra no terminal o conteúdo da requisição e resposta HTTP.
+   debug = false,
+   version = "NCLuaHTTP/1.0.0"
+}
 
 ---Separa o header do body de uma resposta a uma requisição HTTP
 --@param response String contendo a resposta a uma requisição HTTP
@@ -74,7 +70,7 @@ end
 --@param port Porta a ser utilizada para a conexão. O padrão é 80, no caso do valor ser omitido.
 --A porta também pode ser especificada diretamente na URL. Se for indicada uma porta lá e aqui
 --no parâmetro port, a porta da url é que será utilizada e a do parâmetro port será ignorada.
-function request(url, callback, method, params, userAgent, headers, user, password, port)
+function ncluahttp.request(url, callback, method, params, userAgent, headers, user, password, port)
     headers = headers or ""
     params = params or ""
     if method == nil or method == "" then
@@ -211,7 +207,7 @@ end
 --@param port Porta a ser utilizada para a conexão. O padrão é 80, no caso do valor ser omitido.
 --A porta também pode ser especificada diretamente na URL. Se for indicada uma porta lá e aqui
 --no parâmetro port, a porta da url é que será utilizada e a do parâmetro port será ignorada.
-function getFile(url, callback, fileName, userAgent, user, password, port)
+function ncluahttp.getFile(url, callback, fileName, userAgent, user, password, port)
     local function fileDownloaded(header, body)
 	    if header then
 	       --print(response, "\n")
@@ -242,7 +238,7 @@ end
 --o valor de um campo do cabeçalho
 --
 --@param fieldName Nome do campo no cabeçalho HTTP
-function getHttpHeader(header, fieldName)
+function ncluahttp.getHttpHeader(header, fieldName)
   --Procura a posição de início do campo
   local i = string.find(header, fieldName .. ":")
   --Se o campo existe
@@ -262,7 +258,7 @@ end
 --
 --@return Retorna o protocolo, host, porta e o path obtidas da URL.
 --Caso algum destes valores não exita na URL, é retornada uma string vazia no seu lugar.
-function splitUrl(url)
+function ncluahttp.splitUrl(url)
   --TODO: O uso de expressões regulares seria ideal nesta função
   --por meio de string.gsub
 
@@ -306,3 +302,6 @@ function splitUrl(url)
   
   return protocolo, host, porta, path
 end
+
+
+return ncluahttp
