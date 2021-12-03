@@ -5,7 +5,7 @@ Quem conhece e utiliza meus projetos de TV Digital como o [NCLua SOAP](https://
 
 A norma ABNT do Ginga-NCL (NBR 15606-2) define uma classe "tcp" para realização de requisições utilizando o protocolo de mesmo nome, a partir de scripts NCLua (scripts Lua embutidos em documentos NCL). Porém, a norma não define nenhuma implementação para o protocolo HTTP. Este é um protocolo de camada de aplicação, que é trafegado utilizando TCP. Logo, para realizar requisições HTTP, o desenvolvedor de aplicações NCLua precisa compreender tal protocolo, saber o formato das mensagens, quais cabeçalhos devem ser incluídos na mensagem de requisição, e saber o formato da mensagem de resposta para poder separar o resultado do cabeçalho da resposta. Logo, a realização de requisições HTTP em NCLua não é trivial como ocorre em linguagens como Java, Delphi, PHP e outras, onde o desenvolvedor apenas chama funções, informando a URL da página e parâmetros a serem enviados a ela.
 
-Por este motivo, foi desenvolvido o módulo NCLua HTTP. O mesmo depende do [módulo TCP, disponibilizado pela PUC-Rio](http://www.telemidia.puc-rio.br/~francisco/nclua/tutorial/index.html) (já incluso como dependência, como já falei [aqui](http://manoelcampos.com/2010/01/29/documentacao-do-modulo-tcp-para-nclua/)).
+Por este motivo, foi desenvolvido o módulo NCLua HTTP. O mesmo depende do [módulo TCP, disponibilizado pela PUC-Rio](http://www.telemidia.puc-rio.br/~francisco/nclua/tutorial/index.html) (já incluso como dependência).
 
 O módulo TCP trabalha com chamadas assíncronas, tornando mais difícil para o programador obter o retorno da requisição, pois ele **não** pode simplesmente chamar uma função para realizar uma requisição e receber o retorno, como exemplificado abaixo:
 
