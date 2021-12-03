@@ -6,13 +6,12 @@
 -- character table string
 local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
---local _G, string, ipairs, print = _G, string, ipairs, print
-
+local base64 = {}
 
 ---Encode a string to base64 format
 --@param data String to be encoded
 --@return Returns the encoded string
-function enc(data)
+function base64.enc(data)
     return ((data:gsub('.', function(x) 
         local r,b='',x:byte()
         for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
@@ -28,7 +27,7 @@ end
 ---Decode a string from base64 format
 --@param data String to be decoded
 --@return Returns the decoded string
-function dec(data)
+function base64.dec(data)
     data = string.gsub(data, '[^'..b..'=]', '')
     return (data:gsub('.', function(x)
         if (x == '=') then return '' end
@@ -43,17 +42,4 @@ function dec(data)
     end))
 end
 
--- command line if not called as library
-if (arg ~= nil) then
-	local func = 'enc'
-	for n,v in ipairs(arg) do
-		if (n > 0) then
-			if (v == "-h") then print "base64.lua [-e] [-d] text/data" break
-			elseif (v == "-e") then func = 'enc'
-			elseif (v == "-d") then func = 'dec'
-			else print(_G[func](v)) end
-		end
-	end
-else
-	module('base64',package.seeall)
-end
+return base64
