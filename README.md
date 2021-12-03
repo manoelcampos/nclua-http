@@ -36,7 +36,7 @@ function callback(header, body)
   end
 end
 
-ncluahttp.request("http://manoelcampos.com/tv-digital/exemplo1.txt", callback)
+ncluahttp.request("http://manoelcampos.com.br/dtv/arquivo.txt", callback)
 ```
 
 

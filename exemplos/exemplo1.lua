@@ -22,7 +22,7 @@ function main()
   --e o conteúdo (body) da resposta da requisição 
   --Caso a porta seja diferente da padrão (80), a mesma pode ser indicada diretamente na URL,
   --no formato http://url:porta
-  ncluahttp.getFile("http://manoelcampos.com/tv-digital/exemplo1.txt", callback)
+  ncluahttp.getFile("http://manoelcampos.com.br/dtv/arquivo.txt", callback)
 end
 
 local ok, result = pcall(main)
