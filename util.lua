@@ -4,10 +4,7 @@
 --@license Atribuição-Uso não-comercial-Compartilhamento pela mesma licença http://creativecommons.org/licenses/by-nc-sa/2.5/br/
 --@class module
 
-local _G, io, print, string, coroutine, canvas, tonumber, pairs, type, table = 
-      _G, io, print, string, coroutine, canvas, tonumber, pairs, type, table
-
-module "util"
+local util = {}
 
 ---Alterar o número do item atual de uma lista de itens (uma tabela por exemplo),
 --considerando o total de elementos da lista.
@@ -19,7 +16,7 @@ module "util"
 --se tentar ir além do último elemento, volta para o primeiro,
 --e se tentar retroceder antes do primeiro, vai para o último.
 --@return Retorna o novo itemIndex 
-function moveItemIndex(itemIndex, forward, maxValue, circularList)
+function util.moveItemIndex(itemIndex, forward, maxValue, circularList)
     if forward then
        if (itemIndex == maxValue) then
           if circularList then
@@ -48,7 +45,7 @@ end
 ---Clona uma tabela
 --@param tb Tabela ser clonada
 --@return Retorna a nova tabela
-function cloneTable(tb)
+function util.cloneTable(tb)
   local result = {}
   for k, v in pairs(tb) do
     result[k] = v
@@ -61,7 +58,7 @@ end
 --@param level Apenas usado internamente para 
 --imprimir espaços para representar os níveis
 --dentro da tabela.
-function printable(tb, level)
+function util.printable(tb, level)
   level = level or 1
   local spaces = string.rep(' ', level*2)
   for k,v in pairs(tb) do
@@ -80,7 +77,7 @@ end
 --@param maxLineSize Quantidade máxima de caracteres por linha
 --@return Retorna uma tabela onde cada item contém uma linha
 --de texto, no tamanho máximo de maxLineSize
-function breakString(text, maxLineSize)
+function util.breakString(text, maxLineSize)
   local t = {}
   local str = text
   local i, fim = 1, 0
@@ -144,7 +141,7 @@ end
 --@param text Texto a ser impresso, sendo quebrado em
 --linhas para caber horizontalmente na largura
 --definida para impressão
-function paintBreakedString(areaWidth, x, initialY, text)
+function util.paintBreakedString(areaWidth, x, initialY, text)
      --Text Width e Text Height de um caractere minúsculo
      local tw, th = canvas:measureText("a")
      
@@ -174,7 +171,7 @@ end
 --@param fontName Nome da fonte a ser utilizada para imprimir o texto. Opcional
 --@param fontSize Tamanho da fonte. Opcional
 --@param fontColor Cor da fonte. Opcional
-function paintText(x, y, text, fontName, fontSize, fontColor)
+function util.paintText(x, y, text, fontName, fontSize, fontColor)
      if fontName and fontSize then
         canvas:attrFont(fontName, fontSize)
      end
@@ -190,7 +187,7 @@ end
 ---Verifica se um arquivo existe
 --@param fileName Nome do arquivo a ser verificado
 --@return Retorna true se o arquivo existir
-function fileExists(fileName)
+function util.fileExists(fileName)
   local file = io.open(fileName)
   if file then
     io.close(file)
@@ -209,7 +206,7 @@ end
 --@param fileName Nome do arquivo a ser gerado.
 --@param boolean binaryFile Indica se o arquivo a ser salvo é binário ou não 
 --@return Retorna true caso o arquivo seja salvo com sucesso.
-function createFile(content, fileName, binaryFile)
+function util.createFile(content, fileName, binaryFile)
     binaryFile = binaryFile or false
     local mode = ""
     if binaryFile then
@@ -237,7 +234,7 @@ end
 --que representam os parâmetros a serem codificados para o formato URL-Encode,
 --ou String contendo o texto a ser codificado.
 --@return Retorna uma string codificada em URL-Encode
-function urlEncode(t)
+function util.urlEncode(t)
 	  local function escape (s)
 	    s = string.gsub(s, "([&=+%c])", function (c)
 	          return string.format("%%%02X", string.byte(c))
@@ -261,7 +258,7 @@ end
 --pois o operador # não funciona para obter o total de elementos de tais tabelas.
 --@param Tabela a ser contato o total de elementos
 --@return Retorna o total de elementos da tabela
-function count(tb)
+function util.count(tb)
    local i = 0
    for k, v in pairs(tb) do
       i = i + 1
@@ -272,7 +269,7 @@ end
 ---Verifica se uma tabela contém apenas um elemento
 --@param tb Tabela ser verificada
 --@return Retorna true caso a tabela contenha apenas um elemento.
-function hasSingleElement(tb)
+function util.hasSingleElement(tb)
    --Para tabelas mais complexas, geradas a partir de um XML este código não funciona, 
    --congelando a aplicação.
    --local k=next(tb)
@@ -292,7 +289,7 @@ end
 --Obtém o primeiro elemento de uma tabela
 --@param Tabela de onde deverá ser obtido o primeiro elemento
 --@return Retorna o primeiro elemento da tabela
-function getFirstElement(tb)
+function util.getFirstElement(tb)
    if type(tb) == "table" then
        --O uso da função next não funciona para pegar o primeiro elemento. Trava aqui 
       --k, v = next(tb)
@@ -308,7 +305,7 @@ end
 --Obtém a primeira chave de uma tabela
 --@param Tabela de onde deverá ser obtido o primeiro elemento
 --@return Retorna a primeira chave da tabela
-function getFirstKey(tb)
+function util.getFirstKey(tb)
    if type(tb) == "table" then
        --O uso da função next não funciona para pegar o primeiro elemento. Trava aqui 
       --k, v = next(tb)
@@ -333,7 +330,7 @@ end
 --@return Retorna a nova tabela simplificada. Se dentro de toda a estrutura
 --da tabela original só existia um campo com valor, tal valor é retornado
 --como uma variável simples.
-function simplifyTable(tb)
+function util.simplifyTable(tb)
    local tmp = tb
    while type(tmp) == "table" and hasSingleElement(tmp) do
       tmp = getFirstElement(tmp)
@@ -345,7 +342,7 @@ end
 --@param f Função body a ser executada pela co-rotina
 --@param ... Parâmetros adicionais que serão passados à função
 --body da co-rotina, passada no parâmetro f.
-function coroutineCreate(f, ...)
+function util.coroutineCreate(f, ...)
     coroutine.resume(coroutine.create(f), ...)
 end
 
@@ -353,7 +350,7 @@ end
 --seja esta um endereço na web ou um caminho de diretório local
 --@param string url URL de onde obter o nome do arquivo
 --@return string Retorna somente o nome do arquivo obtido da URL.
-function getFileName(url)
+function util.getFileName(url)
   url = string.reverse(url)
   local i = string.find(url, "/")
   if i then
@@ -371,9 +368,11 @@ end
 --@param string sep Separador contido na string s que será usado para quebrá-la
 --em várias strings
 --@return table Tabela (vetor) contendo as strings quebradas a partir de s
-function split(s, sep)
+function util.split(s, sep)
     local sep, fields = sep or ":", {}
     local pattern = string.format("([^%s]+)", sep)
     s:gsub(pattern, function(c) fields[#fields+1] = c end)
     return fields
 end
+
+return util
