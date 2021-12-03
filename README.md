@@ -1,7 +1,7 @@
 NCLua HTTP
 ----------
 
-Quem conhece e utiliza meus projetos de TV Digital como o [NCLua SOAP](https://github.com/manoelcampos/NCLuaSOAP), já deve saber da existência, há algum tempo, do módulo "http". Tal módulo é utilizado para a realização de requisições utilizando o protocolo HTTP. Como o mesmo ficava escondido dentro dos outros projetos, resolvi tratá-lo como um projeto separado.
+Quem conhece e utiliza meus projetos de TV Digital como o [NCLua SOAP](https://github.com/manoelcampos/nclua-soap), já deve saber da existência, há algum tempo, do módulo "http". Tal módulo é utilizado para a realização de requisições utilizando o protocolo HTTP. Como o mesmo ficava escondido dentro dos outros projetos, resolvi tratá-lo como um projeto separado.
 
 A norma ABNT do Ginga-NCL (NBR 15606-2) define uma classe "tcp" para realização de requisições utilizando o protocolo de mesmo nome, a partir de scripts NCLua (scripts Lua embutidos em documentos NCL). Porém, a norma não define nenhuma implementação para o protocolo HTTP. Este é um protocolo de camada de aplicação, que é trafegado utilizando TCP. Logo, para realizar requisições HTTP, o desenvolvedor de aplicações NCLua precisa compreender tal protocolo, saber o formato das mensagens, quais cabeçalhos devem ser incluídos na mensagem de requisição, e saber o formato da mensagem de resposta para poder separar o resultado do cabeçalho da resposta. Logo, a realização de requisições HTTP em NCLua não é trivial como ocorre em linguagens como Java, Delphi, PHP e outras, onde o desenvolvedor apenas chama funções, informando a URL da página e parâmetros a serem enviados a ela.
 
